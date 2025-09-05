@@ -46,8 +46,8 @@
     }
 
     canvas {
-      max-width: 100px; /* Donut lebih kecil */
-      max-height: 100px;
+      max-width: 150px; /* Donut lebih kecil */
+      max-height: 150px;
       margin: 20px auto;
       display: block;
     }
@@ -91,12 +91,14 @@
   <div class="container">
     <h2>🐋 Tabungan Laut Mayu 🪼</h2>
 
-    <button class="button">💙 Masukkan nominal</button>
+  <input type="number" id="setoran" placeholder="💙 Masukkan nominal..." />
+  <button onclick="tambahSetoran()">💙</button>
 
-    <div class="progress-text">
-      Tabungan Terkumpul: Rp 0,00 / Rp 4.000.000,00
-    </div>
+  <div class="saldo">
+    Tabungan Terkumpul: <b><span id="saldo">0</span></b> / <span id="targetDisplay">4000000</span>
+  </div>
 
+  <div class="ucapan" id="ucapanBox"></div>
     <canvas id="donutChart"></canvas>
 
     <table style="width:100%; margin-top:20px;">
@@ -139,5 +141,6 @@
   </script>
 </body>
 </html>
+
 
 
