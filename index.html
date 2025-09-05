@@ -9,36 +9,43 @@
     @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
 
     html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  overflow-x: hidden; /* biar ga bisa geser samping */
-}
-    .container {
-  height: 100vh;   /* penuh tinggi layar */
-  width: 100vw;    /* penuh lebar layar */
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-}
+      margin: 0;
+      padding: 0;
+      height: 100%;
+      width: 100%;
+      overflow-x: hidden;
+    }
+
     body {
       font-family: "Fredoka One", cursive, sans-serif;
-      margin: 20px;
-      max-width: 750px;
       color: #00334e;
       position: relative;
       overflow: visible;
       display: flex;
+      justify-content: center;  /* 🔧 isi ke tengah horizontal */
+      align-items: center;      /* 🔧 isi ke tengah vertikal */
+      min-height: 100vh;        /* 🔧 full tinggi layar */
+      box-sizing: border-box;
+      background: transparent;
+    }
+
+    .container {
+      display: flex;
       flex-direction: column;
       align-items: center;
-      justify-content: center; /* isi ketengah vertikal */
-      min-height: 100vh;       /* full tinggi layar */
+      justify-content: center;
+      text-align: center;
+      width: 100%;
+      max-width: 600px;
+      padding: 20px;
       box-sizing: border-box;
     }
 
-    h2 { text-align: center; color: rgb(7, 56, 94); text-shadow: 1px 1px #fff; }
+    h2 { 
+      text-align: center; 
+      color: rgb(7, 56, 94); 
+      text-shadow: 1px 1px #fff; 
+    }
 
     input, button {
       margin: 8px;
@@ -114,21 +121,22 @@
       padding: 5px 10px;
       cursor: pointer;
     }
-    .hapus-btn:hover { background: #0288d1; }
+    .hapus-btn:hover { background: #0277bd; }
 
     /* Background animasi */
-   #bganimasi {
-  position: relative;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-  z-index: -2;
-}
+    #bganimasi {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: cover;
+      z-index: -2;
+    }
+
     /* ===== Animasi Laut ===== */
     .ubur {
-      position: relative;
+      position: fixed;
       width: 100px;
       animation: uburAnim 6s infinite ease-in-out;
       z-index: 1;
@@ -143,7 +151,7 @@
     }
 
     .paus {
-      position: relative;
+      position: fixed;
       bottom: 10%;
       left: -200px;
       width: 220px;
@@ -158,96 +166,91 @@
     }
 
     /* ===== Bubble ===== */
-  /* ===== Animasi Bubble ===== */
-.bubble {
-  position: relativa;
-  bottom: -50px;
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 50%;
-  animation: rise 12s infinite ease-in;
-  z-index: 2;
-  box-shadow: 0 0 10px rgba(173, 216, 230, 0.8);
-}
+    .bubble {
+      position: fixed;
+      bottom: -50px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 50%;
+      animation: rise 12s infinite ease-in;
+      z-index: 2;
+      box-shadow: 0 0 10px rgba(173, 216, 230, 0.8);
+    }
 
-@keyframes rise {
-  0% {
-    transform: translateY(0) scale(1);
-    opacity: 0.6;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-120vh) scale(1.4);
-    opacity: 0;
-  }
-}
-
+    @keyframes rise {
+      0% {
+        transform: translateY(0) scale(1);
+        opacity: 0.6;
+      }
+      50% { opacity: 1; }
+      100% {
+        transform: translateY(-120vh) scale(1.4);
+        opacity: 0;
+      }
+    }
 
     /* Responsif untuk hape */
-   /* Responsif untuk hape */
-@media (max-width: 600px) {
-   body { 
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      text-align: center;
-      min-height: 100vh;
-      margin: 0;            /* 🔧 Hapus margin biar pas */
-      max-width: 100%;      /* 🔧 Full layar */
-      padding: 10px;
-      box-sizing: border-box; /* 🔧 biar ga overflow */
+    @media (max-width: 600px) {
+      body {
+        margin: 0;
+        padding: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+      .container {
+        padding: 10px;
+        width: 90%;
+      }
+      h2 { font-size: 26px; }
+      input, button { width: 100%; font-size: 18px; }
+      .saldo, .ucapan, table { 
+        width: 100%; 
+        font-size: 18px; 
+        color: white; 
+        -webkit-text-stroke: 1px #103244; 
+      }
+      .ubur { width: 70px; }
+      .paus { width: 150px; }
     }
-   h2 { font-size: 26px; }
-   input, button { width: 90%; font-size: 18px; }
-   .saldo, .ucapan, table { 
-      width: 90%; 
-      font-size: 20px; 
-      color: white; 
-      -webkit-text-stroke: 1px #103244; 
-   }
-   .ubur { width: 70px; }
-   .paus { width: 150px; }
-}
-
   </style>
 </head>
 <body>
-
-  <!-- Background GIF/MP4 -->
+  <!-- Background -->
   <img id="bganimasi" src="7e239b3d1a02ae926fc8b446a01dcfb0.jpg" alt="Latar Laut">
 
-  <!-- Tambahan animasi laut -->
-  <!-- GANTI LINK GAMBAR INI DENGAN PUNYAMU -->
+  <!-- Animasi Laut -->
   <img src="424c95a8cd5fb49edfdb1494cc231c7a-removebg-preview.png" class="ubur ubur1" alt="ubur-ubur">
   <img src="5462198ca28dc7948c493b4e6b9a0ba4-removebg-preview.png" class="ubur ubur2" alt="ubur-ubur">
   <img src="5462198ca28dc7948c493b4e6b9a0ba4-removebg-preview.png" class="paus" alt="paus">
- <div class="container">
-  <h2>🐋 Tabungan Laut Mayu 🐋</h2>
 
-   <div class="card">
-   <input type="number" id="setoran" placeholder="💙 Masukkan nominal..." />
-  <button onclick="tambahSetoran()">💙</button>
+  <!-- Konten Utama -->
+  <div class="container">
+    <h2>🐋 Tabungan Laut Mayu 🐋</h2>
 
-  <div class="saldo">
-    Tabungan Terkumpul: <b><span id="saldo">0</span></b> / <span id="targetDisplay">4000000</span>
+    <input type="number" id="setoran" placeholder="💙 Masukkan nominal..." />
+    <button onclick="tambahSetoran()">💙</button>
+
+    <div class="saldo">
+      Tabungan Terkumpul: <b><span id="saldo">0</span></b> / <span id="targetDisplay">4000000</span>
+    </div>
+
+    <div class="ucapan" id="ucapanBox"></div>
+
+    <canvas id="grafik" height="120" width="120"></canvas>
+
+    <table>
+      <thead>
+        <tr>
+          <th>Tanggal</th>
+          <th>Tumpahan Koin</th>
+          <th>Edit</th>
+        </tr>
+      </thead>
+      <tbody id="daftar"></tbody>
+    </table>
   </div>
-
-  <div class="ucapan" id="ucapanBox"></div>
-
-  <canvas id="grafik" height="120" width="120"></canvas>
-</div>
-  <table>
-    <thead>
-      <tr>
-        <th>Tanggal</th>
-        <th>Tumpahan Koin</th>
-        <th>Edit</th>
-      </tr>
-    </thead>
-    <tbody id="daftar"></tbody>
-  </table>
 
   <script>
     const target = 4000000;
@@ -332,16 +335,15 @@
     function buatBubble(){
       const bubble = document.createElement("div");
       bubble.classList.add("bubble");
-      let size = Math.random() * 20 + 10; // ukuran random
+      let size = Math.random() * 20 + 10;
       bubble.style.width = size + "px";
       bubble.style.height = size + "px";
-      bubble.style.left = Math.random() * 100 + "vw"; // posisi horizontal random
+      bubble.style.left = Math.random() * 100 + "vw";
       document.body.appendChild(bubble);
 
-      setTimeout(()=>{ bubble.remove(); }, 6000); // hapus setelah animasi selesai
+      setTimeout(()=>{ bubble.remove(); }, 6000);
     }
 
-    // bikin bubble terus-terusan
     setInterval(buatBubble, 500);
 
     document.getElementById("setoran").addEventListener("keyup",function(event){
@@ -350,18 +352,12 @@
 
     render();
   </script>
-  <!-- Bubble effect -->
-<div class="bubble" style="left:10%; width:20px; height:20px; animation-duration:8s;"></div>
-<div class="bubble" style="left:30%; width:15px; height:15px; animation-duration:10s; animation-delay:2s;"></div>
-<div class="bubble" style="left:50%; width:25px; height:25px; animation-duration:12s; animation-delay:4s;"></div>
-<div class="bubble" style="left:70%; width:18px; height:18px; animation-duration:9s; animation-delay:6s;"></div>
-<div class="bubble" style="left:85%; width:22px; height:22px; animation-duration:11s; animation-delay:3s;"></div>
 
+  <!-- Bubble statis -->
+  <div class="bubble" style="left:10%; width:20px; height:20px; animation-duration:8s;"></div>
+  <div class="bubble" style="left:30%; width:15px; height:15px; animation-duration:10s; animation-delay:2s;"></div>
+  <div class="bubble" style="left:50%; width:25px; height:25px; animation-duration:12s; animation-delay:4s;"></div>
+  <div class="bubble" style="left:70%; width:18px; height:18px; animation-duration:9s; animation-delay:6s;"></div>
+  <div class="bubble" style="left:85%; width:22px; height:22px; animation-duration:11s; animation-delay:3s;"></div>
 </body>
 </html>
-
-
-
-
-
-
