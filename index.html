@@ -124,6 +124,17 @@
       aspect-ratio: 1/1;   /* ✅ bulat sempurna */
     }
 
+    /* Background animasi */
+    #bganimasi {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      object-fit: contain;
+      z-index: -2;
+    }
+
     /* ===== Animasi Laut ===== */
     .ubur {
       position: fixed;
@@ -186,6 +197,9 @@
 </head>
 <body>
 
+  <!-- Background -->
+  <img id="bganimasi" src="7e239b3d1a02ae926fc8b446a01dcfb0.jpg" alt="Latar Laut">
+
   <!-- Animasi laut -->
   <img src="424c95a8cd5fb49edfdb1494cc231c7a-removebg-preview.png" class="ubur ubur1" alt="ubur-ubur">
   <img src="5462198ca28dc7948c493b4e6b9a0ba4-removebg-preview.png" class="ubur ubur2" alt="ubur-ubur">
@@ -206,6 +220,7 @@
   <div class="chart-wrapper">
     <canvas id="grafik"></canvas>
   </div>
+
   <table>
     <thead>
       <tr>
@@ -216,6 +231,7 @@
     </thead>
     <tbody id="daftar"></tbody>
   </table>
+
   <script>
     const target = 4000000;
     let data = JSON.parse(localStorage.getItem("tabunganLaut")) || [];
@@ -328,7 +344,5 @@
 
 </body>
 </html>
-
-
 
 
