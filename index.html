@@ -185,16 +185,20 @@
 
 
     /* Responsif untuk hape */
-    @media (max-width: 600px) {
+   /* Responsif untuk hape */
+@media (max-width: 600px) {
    body { 
-      display: flex;              /* 🔧 UPDATE pastikan flex aktif */
-      flex-direction: column;     /* 🔧 UPDATE biar urut ke bawah */
-      align-items: center;        /* 🔧 UPDATE center horizontal */
-      justify-content: center;    /* 🔧 UPDATE center vertikal */
-      text-align: center;         /* 🔧 UPDATE biar teks ikut center */
-      min-height: 100vh;          /* 🔧 UPDATE biar full tinggi layar */
-                 /* 🔧 UPDATE kasih jarak dikit */
-   }
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      min-height: 100vh;
+      margin: 0;            /* 🔧 Hapus margin biar pas */
+      max-width: 100%;      /* 🔧 Full layar */
+      padding: 10px;
+      box-sizing: border-box; /* 🔧 biar ga overflow */
+    }
    h2 { font-size: 26px; }
    input, button { width: 90%; font-size: 18px; }
    .saldo, .ucapan, table { 
@@ -206,6 +210,7 @@
    .ubur { width: 70px; }
    .paus { width: 150px; }
 }
+
   </style>
 </head>
 <body>
@@ -354,6 +359,7 @@
 
 </body>
 </html>
+
 
 
 
