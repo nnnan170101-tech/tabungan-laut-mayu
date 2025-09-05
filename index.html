@@ -131,7 +131,7 @@
       left: 0;
       width: 100vw;
       height: 100vh;
-      object-fit: contain;
+      object-fit: cover;
       z-index: -2;
     }
 
@@ -220,18 +220,6 @@
   <div class="chart-wrapper">
     <canvas id="grafik"></canvas>
   </div>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Tanggal</th>
-        <th>Tumpahan Koin</th>
-        <th>Edit</th>
-      </tr>
-    </thead>
-    <tbody id="daftar"></tbody>
-  </table>
-
   <script>
     const target = 4000000;
     let data = JSON.parse(localStorage.getItem("tabunganLaut")) || [];
@@ -344,4 +332,5 @@
 
 </body>
 </html>
+
 
