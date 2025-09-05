@@ -7,37 +7,39 @@
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
-      background-color: #f0f9ff;
-      overflow-x: hidden;
-      text-align: center;
-    }
+  body {
+  font-family: "Fredoka One" Arial, sans-serif;
+  margin: 0;
+  padding: 0;
+  background-color: #f0f9ff;
+  overflow: hidden;              /* 🔧 Hapus scroll global */
+  display: flex;                 /* 🔧 Jadikan flex */
+  justify-content: center;       /* 🔧 Tengah horizontal */
+  align-items: center;           /* 🔧 Tengah vertikal */
+  min-height: 100vh;
+  text-align: center;
+}
 
-    /* Background tetap di bawah */
-    #bganimasi {
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      object-fit: cover;
-      z-index: -1;
-    }
+/* Background */
+#bganimasi {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  z-index: -1;
+}
 
-    /* Container isi */
-    .container {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      min-height: 100vh;
-      width: 100%;
-      max-width: 600px;
-      margin: 0 auto;
-      padding: 20px;
-      box-sizing: border-box;
-    }
+/* Kontainer isi */
+.container {
+  width: 90%;
+  max-width: 600px;
+  max-height: 90vh;              /* 🔧 Biar nggak lebih tinggi dari layar */
+  overflow-y: auto;              /* 🔧 Kalau isi kepanjangan, scroll di dalam */
+  background: rgba(0,0,0,0.3);   /* 🔧 transparan biar konten kebaca */
+  border-radius: 12px;
+  padding: 20px;
+  box-sizing: border-box;
+}
 
     h2 { font-size: 36px; color: white; text-shadow: 2px 2px #103244; margin-bottom: 20px; }
 
@@ -213,3 +215,4 @@
   </script>
 </body>
 </html>
+
