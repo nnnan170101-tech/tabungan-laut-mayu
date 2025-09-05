@@ -1,348 +1,249 @@
 <!DOCTYPE html>
 <html lang="id">
 <head>
-  <meta charset="UTF-8">
-  <title>🐋 Tabungan Laut 🪼</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-  <style>
-    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, viewport-fit=cover"/>
+<title>🪸 Catatan Tabungan Laut Pastel</title>
+<meta name="theme-color" content="#cfefff">
+<style>
+:root{
+  --bg:#cfefff; /* Warna pastel utama untuk background */
+  --card:#fff1f3cc; /* Warna card pastel */
+  --text:#07243d;
+  --muted:#6b7c93;
+  --accent:#ffd1dc;
+  --accent2:#ffb3b3;
+  --danger:#ff6b6b;
+  --success:#41e2a0;
+}
 
-    html, body {
-      margin: 0;
-      padding: 0;
-      height: 100%;
-      width: 100%;
-      overflow-x: hidden;
-    }
-    body {
-      font-family: "Fredoka One", cursive, sans-serif;
-      margin: 0;                 /* ❌ hilangin margin luar */
-      padding: 20px;             /* ✅ pakai padding biar rapih */
-      max-width: 750px;
-      color: #00334e;
-      position: relative;
-      display: flex;
-      flex-direction: column;
-      align-items: center;       /* ✅ center horizontal */
-      justify-content: flex-start;
-      min-height: 100vh;
-      box-sizing: border-box;
-      text-align: center;        /* ✅ semua teks ke tengah */
-    }
+*{box-sizing:border-box}
+html,body{height:100%}
+body{
+  margin:0; font-family: system-ui, -apple-system, Segoe UI, Roboto, Ubuntu, Cantarell, "Noto Sans", Arial;
+  color:var(--text);
+  background-color: var(--bg); /* Background kotak polos */
+  overflow-x:hidden;
+}
 
-    h2 { color: rgb(7, 56, 94); text-shadow: 1px 1px #fff; }
+/* Ocean layer for PNG fishes and jelly */
+.ocean{
+  position:fixed; inset:0; z-index:0; pointer-events:none;
+}
 
-    input, button {
-      margin: 8px;
-      padding: 12px;
-      border-radius: 12px;
-      border: 2px solid #4dd0e1;
-      font-size: 18px;
-      font-family: "Fredoka One"
-    }
+/* Fish images */
+.fish{
+  position:absolute; width:48px; height:48px; z-index:0; opacity:.9;
+  animation: swim 22s linear infinite;
+}
+.fish.small{ width:36px; height:36px; animation-duration:28s; opacity:.8; }
+.fish.tiny{ width:28px; height:28px; animation-duration:35s; opacity:.7; }
 
-    button {
-      background: #a4defd;
-      color: white;
-      cursor: pointer;
-      border: none;
-      font-weight: bold;
-      border-radius: 25px;
-      padding: 12px 18px;
-    }
-    button:hover { background: #0277bd; }
+@keyframes swim{
+  0%  { transform: translateX(-20vw) translateY(0) scale(1) }
+  25% { transform: translateX(30vw) translateY(-2vh) scale(1.03) }
+  50% { transform: translateX(70vw) translateY(2vh) scale(1) }
+  75% { transform: translateX(110vw) translateY(-1vh) scale(1.02) }
+  100%{ transform: translateX(150vw) translateY(0) scale(1) }
+}
 
-    .saldo {
-      font-size: 22px;
-      margin-top: 15px;
-      padding: 14px;
-      background: #e1f5fecc;
-      border: 2px dashed #0288d1;
-      border-radius: 12px;
-      text-align: center;
-      width: 100%;
-      max-width: 500px;
-    }
+/* Jellyfish images */
+.jelly{
+  position:absolute; width:60px; height:70px; opacity:.85; z-index:0;
+  animation: floaty 8s ease-in-out infinite;
+}
+@keyframes floaty{
+  0%,100%{ transform: translateY(0) }
+  50%{ transform: translateY(-18px) }
+}
 
-    .ucapan {
-      margin-top: 15px;
-      padding: 12px;
-      font-size: 18px;
-      font-weight: bold;
-      color: #006064;
-      text-align: center;
-      background: #b2ebf2cc;
-      border-radius: 12px;
-      display: none;
-      animation: fadeIn 0.5s ease-in-out;
-      width: 100%;
-      max-width: 500px;
-    }
+/* App container */
+.app{
+  position:relative; z-index:1; padding: 16px 12px 28px;
+  min-height:100dvh; display:flex; align-items:center; justify-content:center;
+}
+.card{
+  width:100%; max-width: 480px; margin:auto; background: var(--card);
+  backdrop-filter: blur(6px); border:1px solid rgba(0,0,0,.1);
+  border-radius: 20px; padding:16px; box-shadow: 0 10px 30px rgba(0,0,0,.1);
+}
+.header{ display:flex; gap:12px; align-items:center; justify-content:space-between; margin-bottom:10px; }
+.title{ display:flex; align-items:center; gap:10px; }
+.title h1{ font-size:20px; margin:0; letter-spacing:.2px }
+.target{ font-size:12px; color:var(--muted) }
 
-    @keyframes fadeIn {
-      from { opacity:0; transform:scale(0.8); }
-      to { opacity:1; transform:scale(1); }
-    }
+.progress{ margin:10px 0 14px; display:flex; align-items:center; gap:12px; }
+.ring{ width:86px; height:86px; position:relative; }
+.ring svg{ transform: rotate(-90deg) }
+.ring .center{ position:absolute; inset:0; display:grid; place-items:center; text-align:center; font-weight:700; font-size:12px; line-height:1.1; }
+.stats{ flex:1; display:grid; grid-template-columns:1fr 1fr; gap:8px; font-size:13px; }
+.stat{ background: rgba(255,255,255,.1); border-radius:12px; padding:10px; }
+.stat b{ display:block; font-size:13px; color:var(--accent2) }
+.stat span{ font-size:12px; color:var(--muted) }
 
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      margin-top: 20px;
-      background: #ffffffdd;
-      border-radius: 10px;
-      overflow: hidden;
-      max-width: 500px;
-    }
+.form{ display:grid; grid-template-columns: 1fr; gap:10px; margin-top:6px; }
+.row{ display:flex; gap:10px; }
+input, button, textarea{
+  width:100%; padding:12px 13px; border-radius:12px; border:1px solid rgba(0,0,0,.12);
+  background: rgba(255,255,255,.3); color:var(--text); font-size:16px;
+}
+input::placeholder, textarea::placeholder{ color:#9b9b9b }
+textarea{ min-height:64px; resize:vertical }
+.btn{ border:none; font-weight:700; letter-spacing:.2px; cursor:pointer; touch-action: manipulation; transition: transform .05s ease, filter .2s; }
+.btn:active{ transform: translateY(1px) }
+.primary{ background: linear-gradient(180deg, #ffd1dc, #ffb3b3); color:#07243d }
+.ghost{ background: rgba(255,255,255,.2) }
+.danger{ background: linear-gradient(180deg, #ff9ba0, #ff6b6b) }
 
-    th, td { border: 1px solid #81d4fa; padding: 8px; text-align: center; }
-    th { background: #0288d1; color: #fff; }
-    tr:nth-child(even) { background: #e1f5fe; }
+.list{ margin-top:14px; display:flex; flex-direction:column; gap:8px; max-height: 40vh; overflow:auto; -webkit-overflow-scrolling: touch; }
+.item{ display:flex; justify-content:space-between; gap:8px; align-items:center; padding:10px; background: rgba(255,255,255,.08); border-radius:12px; }
+.item .left{ min-width:0 }
+.item .amt{ font-weight:800 }
+.item .note{ color:var(--muted); font-size:12px; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; max-width:56vw }
+.item .time{ font-size:11px; color:#9b9b9b; margin-top:3px }
 
-    .hapus-btn {
-      background: #0288d1;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      padding: 5px 10px;
-      cursor: pointer;
-    }
-    .hapus-btn:hover { background: #015f8a; }
+.actions{ display:flex; gap:10px; margin-top:8px }
+.tip{ color:#6b7c93; font-size:12px; margin-top:8px }
 
-    /* Chart wrapper */
-    .chart-wrapper {
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      margin: 20px 0;
-      width: 100%;
-      min-height: 260px;   /* ✅ biar donut nggak nempel */
-    }
-    #grafik {
-      width: 70vw;         /* ✅ responsif */
-      max-width: 280px;    /* ✅ batas atas */
-      aspect-ratio: 1/1;   /* ✅ bulat sempurna */
-    }
+#confetti{ position: fixed; inset:0; z-index:3; pointer-events:none }
 
-    /* Background animasi */
-    #bganimasi {
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      object-fit: contain;
-      z-index: -2;
-    }
+.ocean, .fish, .jelly { pointer-events:none }
 
-    /* ===== Animasi Laut ===== */
-    .ubur {
-      position: fixed;
-      width: 100px;
-      animation: uburAnim 6s infinite ease-in-out;
-      z-index: 1;
-    }
-    .ubur1 { left: 10%; top: 40%; animation-delay: 0s; }
-    .ubur2 { left: 70%; top: 60%; animation-delay: 3s; }
-
-    @keyframes uburAnim {
-      0% { transform: translateY(0) scale(1); opacity: 0.8; }
-      50% { transform: translateY(-40px) scale(1.1); opacity: 1; }
-      100% { transform: translateY(0) scale(1); opacity: 0.8; }
-    }
-
-    .paus {
-      position: fixed;
-      bottom: 10%;
-      left: -200px;
-      width: 220px;
-      animation: pausAnim 18s infinite linear;
-      z-index: 3;
-    }
-
-    @keyframes pausAnim {
-      0% { left: -250px; }
-      50% { left: 50%; transform: translateX(-50%) scale(1.1); }
-      100% { left: 110%; }
-    }
-
-    /* ===== Bubble ===== */
-    .bubble {
-      position: fixed;
-      bottom: -50px;
-      background: rgba(255, 255, 255, 0.7);
-      border-radius: 50%;
-      animation: rise 12s infinite ease-in;
-      z-index: 2;
-      box-shadow: 0 0 10px rgba(173, 216, 230, 0.8);
-    }
-
-    @keyframes rise {
-      0% { transform: translateY(0) scale(1); opacity: 0.6; }
-      50% { opacity: 1; }
-      100% { transform: translateY(-120vh) scale(1.4); opacity: 0; }
-    }
-
-    /* Responsif untuk hape */
-    @media (max-width: 600px) {
-      body { align-items: center;}
-      h2 { font-size: 26px; }
-      input, button { width: 90%; font-size: 18px; }
-      .saldo, .ucapan, table { width: 90%; font-size: 20px; color: white; -webkit-text-stroke: 1px #103244; }
-      .ubur { width: 70px; }
-      .paus { width: 150px; }
-      #grafik { max-width: 220px; }
-    }
-  </style>
+.app{ padding-bottom: max(28px, env(safe-area-inset-bottom)); padding-top: max(12px, env(safe-area-inset-top)); }
+</style>
 </head>
 <body>
-
-  <!-- Background -->
-  <img id="bganimasi" src="7e239b3d1a02ae926fc8b446a01dcfb0.jpg" alt="Latar Laut">
-
-  <!-- Animasi laut -->
-  <img src="424c95a8cd5fb49edfdb1494cc231c7a-removebg-preview.png" class="ubur ubur1" alt="ubur-ubur">
-  <img src="5462198ca28dc7948c493b4e6b9a0ba4-removebg-preview.png" class="ubur ubur2" alt="ubur-ubur">
-  <img src="5462198ca28dc7948c493b4e6b9a0ba4-removebg-preview.png" class="paus" alt="paus">
-
-  <h2>🐋 Tabungan Laut Mayu 🐋</h2>
-
-  <input type="number" id="setoran" placeholder="💙 Masukkan nominal..." />
-  <button onclick="tambahSetoran()">💙</button>
-
-  <div class="saldo">
-    Tabungan Terkumpul: <b><span id="saldo">0</span></b> / <span id="targetDisplay">4000000</span>
+  <div class="ocean" aria-hidden="true">
+    <!-- GANTI GAMBAR IKAN / UBUR-UBUR -->
+    <img src="ikan1.png" class="fish" alt="Ikan 1" style="top:20vh; left:-10vw;">
+    <img src="ikan2.png" class="fish small" alt="Ikan 2" style="top:40vh; left:-15vw;">
+    <img src="ubur1.png" class="jelly" alt="Ubur-ubur 1" style="left:10vw; top:15vh;">
+    <img src="ubur2.png" class="jelly" alt="Ubur-ubur 2" style="left:70vw; top:30vh; transform: scale(.9);">
   </div>
 
-  <div class="ucapan" id="ucapanBox"></div>
+  <canvas id="confetti"></canvas>
 
-  <!-- Donut chart -->
-  <div class="chart-wrapper">
-    <canvas id="grafik"></canvas>
-  </div>
+  <main class="app">
+    <section class="card" role="region" aria-label="Catatan tabungan">
+      <div class="header">
+        <div class="title">
+          <span style="font-size:22px">🪼</span>
+          <div>
+            <h1>Tabungan Laut Pastel</h1>
+            <div class="target">Target: <b id="targetLabel">Rp 4.000.000</b></div>
+          </div>
+        </div>
+        <button class="btn ghost" id="btnShare">Bagikan</button>
+      </div>
 
-  <table>
-    <thead>
-      <tr>
-        <th>Tanggal</th>
-        <th>Tumpahan Koin</th>
-        <th>Edit</th>
-      </tr>
-    </thead>
-    <tbody id="daftar"></tbody>
-  </table>
+      <!-- Progress -->
+      <div class="progress" aria-live="polite">
+        <div class="ring" aria-hidden="true">
+          <svg width="86" height="86" viewBox="0 0 100 100">
+            <circle cx="50" cy="50" r="42" stroke="rgba(0,0,0,.1)" stroke-width="12" fill="none"/>
+            <circle id="ringProg" cx="50" cy="50" r="42" stroke="url(#grad)" stroke-width="12" stroke-linecap="round" fill="none" stroke-dasharray="264" stroke-dashoffset="264"/>
+            <defs>
+              <linearGradient id="grad" x1="0" x2="1">
+                <stop offset="0%" stop-color="#ffd1dc"/>
+                <stop offset="100%" stop-color="#ffb3b3"/>
+              </linearGradient>
+            </defs>
+          </svg>
+          <div class="center"><div id="pctText">0%</div></div>
+        </div>
+        <div class="stats">
+          <div class="stat"><b id="savedLabel">Rp 0</b><span>Terkumpul</span></div>
+          <div class="stat"><b id="remainLabel">Rp 4.000.000</b><span>Sisa</span></div>
+        </div>
+      </div>
 
-  <script>
-    const target = 4000000;
-    let data = JSON.parse(localStorage.getItem("tabunganLaut")) || [];
+      <!-- Form -->
+      <form class="form" id="form">
+        <div class="row">
+          <input id="amount" type="number" inputmode="numeric" step="1000" min="0" placeholder="Nominal (contoh 50000)"/>
+          <button type="submit" class="btn primary" id="btnAdd">+ Tambah</button>
+        </div>
+        <textarea id="note" placeholder="Catatan (opsional)"></textarea>
+      </form>
 
-    const ucapanList = [
-      "💦 Ubur-ubur goyang seneng kamu nabung!",
-      "🐋 Whale semprotkan air: wooshhh semangat nabung!",
-      "🐠 Ikan-ikan kecil menari di sekitarmu 🎶",
-      "🌊 Nabungmu bikin laut makin indah!",
-      "🐚 Karang-karang ikut bersinar karena semangatmu ✨"
-    ];
+      <div class="list" id="list" aria-label="Daftar catatan"></div>
 
-    let ctx = document.getElementById("grafik").getContext("2d");
-    let chart = new Chart(ctx, {
-      type: 'doughnut',
-      data: { 
-        labels: ["💙 Terkumpul","🤍 Sisa"], 
-        datasets:[{ 
-          data:[0,target], 
-          backgroundColor:["#0288d1","#e1f5fe"],
-          borderWidth: 0
-        }] 
-      },
-      options:{ 
-        responsive:true, 
-        maintainAspectRatio: false,
-        plugins:{legend:{position:'bottom'}} 
-      }
-    });
+      <div class="actions">
+        <button class="btn ghost" id="btnUndo">↶ Urungkan</button>
+        <button class="btn danger" id="btnReset">Reset</button>
+      </div>
+      <div class="tip">Tips: tekan <b>Bagikan</b> untuk share progres. Data otomatis tersimpan di perangkat.</div>
+    </section>
+  </main>
 
-    function render() {
-      let tbody = document.getElementById("daftar");
-      let saldo = 0;
-      tbody.innerHTML = "";
-      data.forEach((d,index)=>{
-        tbody.innerHTML += `<tr>
-          <td>${d.tanggal}</td>
-          <td>${d.nominal.toLocaleString('id-ID',{style:'currency',currency:'IDR'})}</td>
-          <td><button class="hapus-btn" onclick="hapusSetoran(${index})">Hapus</button></td>
-        </tr>`;
-        saldo += d.nominal;
-      });
-      document.getElementById("saldo").innerText = saldo.toLocaleString('id-ID',{style:'currency',currency:'IDR'});
-      document.getElementById("targetDisplay").innerText = target.toLocaleString('id-ID',{style:'currency',currency:'IDR'});
-      chart.data.datasets[0].data = [saldo, Math.max(target-saldo,0)];
-      chart.update();
-      localStorage.setItem("tabunganLaut", JSON.stringify(data));
-    }
+<script>
+// ====== Config ======
+const TARGET = 4000000;
+const KEY = 'tabunganLautPastel';
+let state={target:TARGET, items:[], history:[]};
 
-    function tambahSetoran(){
-      let nominal = parseInt(document.getElementById("setoran").value);
-      if(!nominal) return;
-      let today = new Date().toLocaleDateString("id-ID");
-      data.push({nominal,tanggal:today});
-      render();
-      showUcapan(ucapanList[Math.floor(Math.random()*ucapanList.length)]);
-      semburanConfetti();
-      document.getElementById("setoran").value = "";
-    }
+const idr = new Intl.NumberFormat('id-ID',{style:'currency',currency:'IDR',maximumFractionDigits:0});
+const pad2=n=>String(n).padStart(2,'0');
+function nowStr(){ const d=new Date(); return `${pad2(d.getDate())}-${pad2(d.getMonth()+1)}-${d.getFullYear()} ${pad2(d.getHours())}:${pad2(d.getMinutes())}`; }
 
-    function hapusSetoran(index){
-      if(confirm("Apakah kamu yakin mau menghapus setoran ini? 🌊")){
-        data.splice(index,1);
-        render();
-      }
-    }
+function load(){ try{ const raw=localStorage.getItem(KEY); if(raw){ const obj=JSON.parse(raw); if(obj && Array.isArray(obj.items)) state={target:obj.target||TARGET, items:obj.items, history:[]}; } }catch(e){} }
+function save(){ localStorage.setItem(KEY, JSON.stringify({target:state.target, items:state.items})); }
+function total(){ return state.items.reduce((a,b)=>a+(b.amount||0),0); }
 
-    function showUcapan(text){
-      let box = document.getElementById("ucapanBox");
-      box.innerText = text;
-      box.style.display = "block";
-      setTimeout(()=>{box.style.display="none";},4000);
-    }
+// ====== UI Update ======
+const ring=document.getElementById('ringProg');
+const pctText=document.getElementById('pctText');
+const savedLabel=document.getElementById('savedLabel');
+const remainLabel=document.getElementById('remainLabel');
+const targetLabel=document.getElementById('targetLabel');
+const list=document.getElementById('list');
+const CIRC=2*Math.PI*42;
 
-    function semburanConfetti(full=false){
-      let duration = full?4000:2000;
-      let end = Date.now()+duration;
-      (function frame(){
-        confetti({
-          particleCount: full?15:8,
-          startVelocity: full?60:40,
-          spread: full?70:40,
-          angle:270,
-          origin:{x:0.5,y:1},
-          colors:["#0288d1","#4dd0e1","#81d4fa","#ffffff"]
-        });
-        if(Date.now()<end){ requestAnimationFrame(frame); }
-      })();
-    }
+function update(){
+  const t=total();
+  const pct=Math.max(0,Math.min(100,Math.round((t/state.target)*100)));
+  ring.setAttribute('stroke-dasharray', CIRC.toFixed(1));
+  ring.setAttribute('stroke-dashoffset',(CIRC*(1-pct/100)).toFixed(1));
+  pctText.textContent=pct+'%';
+  savedLabel.textContent=idr.format(t);
+  remainLabel.textContent=idr.format(Math.max(0,state.target-t));
+  targetLabel.textContent=idr.format(state.target);
 
-    // ===== Bubble Generator =====
-    function buatBubble(){
-      const bubble = document.createElement("div");
-      bubble.classList.add("bubble");
-      let size = Math.random() * 20 + 10;
-      bubble.style.width = size + "px";
-      bubble.style.height = size + "px";
-      bubble.style.left = Math.random() * 100 + "vw";
-      document.body.appendChild(bubble);
-      setTimeout(()=>{ bubble.remove(); }, 6000);
-    }
-    setInterval(buatBubble, 500);
+  list.innerHTML='';
+  if(state.items.length===0){ const empty=document.createElement('div'); empty.className='item'; empty.innerHTML='<div class="left"><div class="note">Belum ada catatan, yuk mulai menabung ✨</div></div>'; list.appendChild(empty);}
+  else{ state.items.slice().reverse().forEach((it,idxRev)=>{ const div=document.createElement('div'); div.className='item'; const left=document.createElement('div'); left.className='left'; const amt=document.createElement('div'); amt.className='amt'; amt.textContent=idr.format(it.amount); const note=document.createElement('div'); note.className='note'; note.textContent=it.note||'—'; const time=document.createElement('div'); time.className='time'; time.textContent=it.time; left.appendChild(amt); left.appendChild(note); left.appendChild(time); const del=document.createElement('button'); del.className='btn ghost'; del.style.width='88px'; del.textContent='Hapus'; del.addEventListener('click',()=>{ const trueIndex=state.items.length-1-idxRev; state.history.push({action:'delete', item:state.items[trueIndex], index:trueIndex}); state.items.splice(trueIndex,1); save(); update(); }); div.appendChild(left); div.appendChild(del); list.appendChild(div); }); }
+  if(t>=state.target){ burstConfetti(); }
+}
 
-    document.getElementById("setoran").addEventListener("keyup",function(event){
-      if(event.key==="Enter"){ tambahSetoran(); }
-    });
+// ====== Form actions ======
+const form=document.getElementById('form');
+const amountInput=document.getElementById('amount');
+const noteInput=document.getElementById('note');
+const btnUndo=document.getElementById('btnUndo');
+const btnReset=document.getElementById('btnReset');
+const btnShare=document.getElementById('btnShare');
 
-    render();
-  </script>
+form.addEventListener('submit',(e)=>{ e.preventDefault(); const val=parseInt(amountInput.value); if(isNaN(val)||val<=0) return alert('Masukkan nominal yang benar'); const note=noteInput.value.trim(); const item={amount:val, note, time:nowStr()}; state.items.push(item); state.history.push({action:'add', item}); save(); update(); amountInput.value=''; noteInput.value=''; amountInput.focus(); });
 
+btnUndo.addEventListener('click',()=>{ const h=state.history.pop(); if(!h) return; if(h.action==='add') state.items.pop(); if(h.action==='delete') state.items.splice(h.index,0,h.item); save(); update(); });
+
+btnReset.addEventListener('click',()=>{ if(confirm('Yakin ingin reset semua catatan?')){ state.items=[]; state.history=[]; save(); update(); } });
+
+btnShare.addEventListener('click',()=>{ const t=total(); alert(`Tabungan terkumpul ${idr.format(t)} dari target ${idr.format(state.target)}\nProgress ${Math.round(t/state.target*100)}%`); });
+
+// ====== Confetti ======
+const confettiCanvas=document.getElementById('confetti');
+const confettiCtx=confettiCanvas.getContext('2d');
+function resizeCanvas(){ confettiCanvas.width=window.innerWidth; confettiCanvas.height=window.innerHeight; }
+window.addEventListener('resize', resizeCanvas); resizeCanvas();
+function burstConfetti(){
+  if(window.confettiFired) return; window.confettiFired=true;
+  confetti({ particleCount:150, spread:70, origin:{y:0.6}, colors:['#ffd1dc','#ffb3b3','#41e2a0','#cfefff','#a8e0ff'] });
+}
+function confetti(opts){ const js=document.createElement('script'); js.src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"; js.onload=()=>{ window.confetti(opts); }; document.head.appendChild(js); }
+
+// ====== Boot ======
+load(); update();
+</script>
 </body>
 </html>
-
-
