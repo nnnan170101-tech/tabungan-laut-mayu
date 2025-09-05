@@ -2,335 +2,140 @@
 <html lang="id">
 <head>
   <meta charset="UTF-8">
-  <title>🐋 Tabungan Laut 🪼</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>🐋 Tabungan Laut Mayu 🪼</title>
+
+  <!-- Import font Fredoka One -->
+  <link href="https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap" rel="stylesheet">
+
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
   <style>
-    @import url('https://fonts.googleapis.com/css2?family=Fredoka+One&display=swap');
-
-    html, body {
-  margin: 0;
-  padding: 0;
-  height: 100%;
-  width: 100%;
-  overflow-x: hidden; /* biar ga bisa geser samping */
-}
     body {
-      font-family: "Fredoka One", cursive, sans-serif;
-      margin: 20px;
-      max-width: 750px;
-      color: #00334e;
-      position: relative;
-      overflow: visible;
+      margin: 0;
+      font-family: 'Fredoka One', cursive;
+      background: url('background-laut.png') no-repeat center center fixed; /* Ganti di sini */
+      background-size: cover;
       display: flex;
-      flex-direction: column;
+      justify-content: center;
       align-items: center;
-      justify-content: center; /* isi ketengah vertikal */
-      min-height: 100vh;       /* full tinggi layar */
-      box-sizing: border-box;
+      min-height: 100vh;
+      flex-direction: column;
     }
 
-    h2 { text-align: center; color: rgb(7, 56, 94); text-shadow: 1px 1px #fff; }
-
-    input, button {
-      margin: 8px;
-      padding: 12px;
-      border-radius: 12px;
-      border: 2px solid #4dd0e1;
-      font-size: 18px;
-      font-family: "Fredoka One"
-    }
-
-    button {
-      background: #a4defd;
-      color: white;
-      cursor: pointer;
-      border: none;
-      font-weight: bold;
-      border-radius: 25px;
-      padding: 12px 18px;
-    }
-    button:hover { background: #0277bd; }
-
-    .saldo {
-      font-size: 22px;
-      margin-top: 15px;
-      padding: 14px;
-      background: #e1f5fecc;
-      border: 2px dashed #0288d1;
-      border-radius: 12px;
+    .container {
       text-align: center;
       width: 100%;
-      max-width: 500px;
+      max-width: 400px;
     }
 
-    .ucapan {
-      margin-top: 15px;
-      padding: 12px;
-      font-size: 18px;
-      font-weight: bold;
-      color: #006064;
-      text-align: center;
-      background: #b2ebf2cc;
-      border-radius: 12px;
-      display: none;
-      animation: fadeIn 0.5s ease-in-out;
-      width: 100%;
-      max-width: 500px;
+    h2 {
+      color: #005f73;
+      margin-bottom: 10px;
     }
 
-    @keyframes fadeIn {
-      from { opacity:0; transform:scale(0.8); }
-      to { opacity:1; transform:scale(1); }
-    }
-
-    table {
-      border-collapse: collapse;
-      width: 100%;
-      margin-top: 20px;
-      background: #ffffffdd;
-      border-radius: 10px;
-      overflow: hidden;
-      max-width: 500px;
-    }
-
-    th, td { border: 1px solid #81d4fa; padding: 8px; text-align: center; }
-    th { background: #0288d1; color: #fff; }
-    tr:nth-child(even) { background: #e1f5fe; }
-
-    .hapus-btn {
-      background: #0288d1;
-      color: white;
+    .button {
+      background: #a2d2ff;
       border: none;
-      border-radius: 6px;
-      padding: 5px 10px;
+      padding: 10px 15px;
+      margin: 10px 0;
+      border-radius: 12px;
+      font-size: 16px;
       cursor: pointer;
     }
-    .hapus-btn:hover { background: #0288d1; }
 
-    /* Background animasi */
-   #bganimasi {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  object-fit: cover;
-  z-index: -2;
-}
-    /* ===== Animasi Laut ===== */
-    .ubur {
-      position: fixed;
-      width: 100px;
-      animation: uburAnim 6s infinite ease-in-out;
-      z-index: 1;
-    }
-    .ubur1 { left: 10%; top: 40%; animation-delay: 0s; }
-    .ubur2 { left: 70%; top: 60%; animation-delay: 3s; }
-
-    @keyframes uburAnim {
-      0% { transform: translateY(0) scale(1); opacity: 0.8; }
-      50% { transform: translateY(-40px) scale(1.1); opacity: 1; }
-      100% { transform: translateY(0) scale(1); opacity: 0.8; }
+    canvas {
+      max-width: 250px; /* Donut lebih kecil */
+      max-height: 250px;
+      margin: 20px auto;
+      display: block;
     }
 
-    .paus {
-      position: fixed;
-      bottom: 10%;
-      left: -200px;
-      width: 220px;
-      animation: pausAnim 18s infinite linear;
-      z-index: 3;
+    .progress-text {
+      background: rgba(255, 255, 255, 0.6);
+      border: 2px dashed #005f73;
+      padding: 10px;
+      border-radius: 12px;
+      margin: 10px 0;
     }
 
-    @keyframes pausAnim {
-      0% { left: -250px; }
-      50% { left: 50%; transform: translateX(-50%) scale(1.1); }
-      100% { left: 110%; }
+    /* Animasi ubur-ubur */
+    .jellyfish {
+      position: absolute;
+      width: 60px;
+      animation: float 10s infinite;
+    }
+    @keyframes float {
+      0% { transform: translateY(100vh); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-20vh); opacity: 0; }
     }
 
-    /* ===== Bubble ===== */
-  /* ===== Animasi Bubble ===== */
-.bubble {
-  position: fixed;
-  bottom: -50px;
-  background: rgba(255, 255, 255, 0.7);
-  border-radius: 50%;
-  animation: rise 12s infinite ease-in;
-  z-index: 2;
-  box-shadow: 0 0 10px rgba(173, 216, 230, 0.8);
-}
-
-@keyframes rise {
-  0% {
-    transform: translateY(0) scale(1);
-    opacity: 0.6;
-  }
-  50% {
-    opacity: 1;
-  }
-  100% {
-    transform: translateY(-120vh) scale(1.4);
-    opacity: 0;
-  }
-}
-
-
-    /* Responsif untuk hape */
-    @media (max-width: 600px) {
-       body { align-items: center;}
-      h2 { font-size: 26px; }
-      input, button { width: 90%; font-size: 18px; }
-      .saldo, .ucapan, table { width: 90%; font-size: 20px; color: white; 
-  -webkit-text-stroke: 1px #103244;; }
-      .ubur { width: 70px; }
-      .paus { width: 150px; }
+    /* Animasi bubble */
+    .bubble {
+      position: absolute;
+      bottom: -50px;
+      background: rgba(255, 255, 255, 0.7);
+      border-radius: 50%;
+      animation: rise 8s infinite ease-in;
+    }
+    @keyframes rise {
+      0% { transform: translateY(0) scale(0.5); opacity: 0; }
+      50% { opacity: 1; }
+      100% { transform: translateY(-100vh) scale(1); opacity: 0; }
     }
   </style>
 </head>
 <body>
+  <div class="container">
+    <h2>🐋 Tabungan Laut Mayu 🪼</h2>
 
-  <!-- Background GIF/MP4 -->
-  <img id="bganimasi" src="7e239b3d1a02ae926fc8b446a01dcfb0.jpg" alt="Latar Laut">
+    <button class="button">💙 Masukkan nominal</button>
 
-  <!-- Tambahan animasi laut -->
-  <!-- GANTI LINK GAMBAR INI DENGAN PUNYAMU -->
-  <img src="424c95a8cd5fb49edfdb1494cc231c7a-removebg-preview.png" class="ubur ubur1" alt="ubur-ubur">
-  <img src="5462198ca28dc7948c493b4e6b9a0ba4-removebg-preview.png" class="ubur ubur2" alt="ubur-ubur">
-  <img src="5462198ca28dc7948c493b4e6b9a0ba4-removebg-preview.png" class="paus" alt="paus">
+    <div class="progress-text">
+      Tabungan Terkumpul: Rp 0,00 / Rp 4.000.000,00
+    </div>
 
-  <h2>🐋 Tabungan Laut Mayu 🐋</h2>
+    <canvas id="donutChart"></canvas>
 
-  <input type="number" id="setoran" placeholder="💙 Masukkan nominal..." />
-  <button onclick="tambahSetoran()">💙</button>
-
-  <div class="saldo">
-    Tabungan Terkumpul: <b><span id="saldo">0</span></b> / <span id="targetDisplay">4000000</span>
+    <table style="width:100%; margin-top:20px;">
+      <tr>
+        <th style="background:#219ebc; color:white; padding:5px;">Tanggal</th>
+        <th style="background:#219ebc; color:white; padding:5px;">Tumpahan Koin</th>
+      </tr>
+    </table>
   </div>
 
-  <div class="ucapan" id="ucapanBox"></div>
+  <!-- Ganti gambar ubur-ubur di sini -->
+  <img src="424c95a8cd5fb49edfdb1494cc231c7a-removebg-preview.png" class="jellyfish" style="left:10%;" alt="">
+  <img src="5462198ca28dc7948c493b4e6b9a0ba4-removebg-preview.png" class="jellyfish" style="left:50%; animation-delay:3s;" alt="">
+  <img src="8ce4dbee906af5a52d2fdaad4ae3f49a-removebg-preview.png" class="jellyfish" style="left:80%; animation-delay:6s;" alt="">
 
-  <canvas id="grafik" height="80" width="80"></canvas>
-
-  <table>
-    <thead>
-      <tr>
-        <th>Tanggal</th>
-        <th>Tumpahan Koin</th>
-        <th>Edit</th>
-      </tr>
-    </thead>
-    <tbody id="daftar"></tbody>
-  </table>
+  <!-- Ganti bubble di sini -->
+  <div class="bubble" style="left:20px; width:20px; height:20px; animation-duration:6s;"></div>
+  <div class="bubble" style="left:100px; width:15px; height:15px; animation-duration:9s;"></div>
+  <div class="bubble" style="left:200px; width:25px; height:25px; animation-duration:12s;"></div>
 
   <script>
-    const target = 4000000;
-    let data = JSON.parse(localStorage.getItem("tabunganLaut")) || [];
-
-    const ucapanList = [
-      "💦 Ubur-ubur goyang seneng kamu nabung!",
-      "🐋 Whale semprotkan air: wooshhh semangat nabung!",
-      "🐠 Ikan-ikan kecil menari di sekitarmu 🎶",
-      "🌊 Nabungmu bikin laut makin indah!",
-      "🐚 Karang-karang ikut bersinar karena semangatmu ✨"
-    ];
-
-    let ctx = document.getElementById("grafik").getContext("2d");
-    let chart = new Chart(ctx, {
+    const ctx = document.getElementById('donutChart').getContext('2d');
+    const donutChart = new Chart(ctx, {
       type: 'doughnut',
-      data: { labels: ["💙 Terkumpul","🤍 Sisa"], datasets:[{data:[0,target], backgroundColor:["#0288d1","#e1f5fe"]}] },
-      options:{ responsive:true, plugins:{legend:{position:'bottom'}}}
-    });
-
-    function render() {
-      let tbody = document.getElementById("daftar");
-      let saldo = 0;
-      tbody.innerHTML = "";
-      data.forEach((d,index)=>{
-        tbody.innerHTML += `<tr>
-          <td>${d.tanggal}</td>
-          <td>${d.nominal.toLocaleString('id-ID',{style:'currency',currency:'IDR'})}</td>
-          <td><button class="hapus-btn" onclick="hapusSetoran(${index})">Hapus</button></td>
-        </tr>`;
-        saldo += d.nominal;
-      });
-      document.getElementById("saldo").innerText = saldo.toLocaleString('id-ID',{style:'currency',currency:'IDR'});
-      document.getElementById("targetDisplay").innerText = target.toLocaleString('id-ID',{style:'currency',currency:'IDR'});
-      chart.data.datasets[0].data = [saldo, Math.max(target-saldo,0)];
-      chart.update();
-      localStorage.setItem("tabunganLaut", JSON.stringify(data));
-    }
-
-    function tambahSetoran(){
-      let nominal = parseInt(document.getElementById("setoran").value);
-      if(!nominal) return;
-      let today = new Date().toLocaleDateString("id-ID");
-      data.push({nominal,tanggal:today});
-      render();
-      showUcapan(ucapanList[Math.floor(Math.random()*ucapanList.length)]);
-      semburanConfetti();
-      document.getElementById("setoran").value = "";
-    }
-
-    function hapusSetoran(index){
-      if(confirm("Apakah kamu yakin mau menghapus setoran ini? 🌊")){
-        data.splice(index,1);
-        render();
+      data: {
+        labels: ['Terkumpul', 'Sisa'],
+        datasets: [{
+          data: [0, 4000000],
+          backgroundColor: ['#219ebc', '#e0e0e0'],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        cutout: '70%',
+        plugins: { legend: { display: false } },
+        responsive: true,
+        maintainAspectRatio: false
       }
-    }
-
-    function showUcapan(text){
-      let box = document.getElementById("ucapanBox");
-      box.innerText = text;
-      box.style.display = "block";
-      setTimeout(()=>{box.style.display="none";},4000);
-    }
-
-    function semburanConfetti(full=false){
-      let duration = full?4000:2000;
-      let end = Date.now()+duration;
-      (function frame(){
-        confetti({
-          particleCount: full?15:8,
-          startVelocity: full?60:40,
-          spread: full?70:40,
-          angle:270,
-          origin:{x:0.5,y:1},
-          colors:["#0288d1","#4dd0e1","#81d4fa","#ffffff"]
-        });
-        if(Date.now()<end){ requestAnimationFrame(frame); }
-      })();
-    }
-
-    // ===== Bubble Generator =====
-    function buatBubble(){
-      const bubble = document.createElement("div");
-      bubble.classList.add("bubble");
-      let size = Math.random() * 20 + 10; // ukuran random
-      bubble.style.width = size + "px";
-      bubble.style.height = size + "px";
-      bubble.style.left = Math.random() * 100 + "vw"; // posisi horizontal random
-      document.body.appendChild(bubble);
-
-      setTimeout(()=>{ bubble.remove(); }, 6000); // hapus setelah animasi selesai
-    }
-
-    // bikin bubble terus-terusan
-    setInterval(buatBubble, 500);
-
-    document.getElementById("setoran").addEventListener("keyup",function(event){
-      if(event.key==="Enter"){ tambahSetoran(); }
     });
-
-    render();
   </script>
-  <!-- Bubble effect -->
-<div class="bubble" style="left:10%; width:20px; height:20px; animation-duration:8s;"></div>
-<div class="bubble" style="left:30%; width:15px; height:15px; animation-duration:10s; animation-delay:2s;"></div>
-<div class="bubble" style="left:50%; width:25px; height:25px; animation-duration:12s; animation-delay:4s;"></div>
-<div class="bubble" style="left:70%; width:18px; height:18px; animation-duration:9s; animation-delay:6s;"></div>
-<div class="bubble" style="left:85%; width:22px; height:22px; animation-duration:11s; animation-delay:3s;"></div>
-
 </body>
 </html>
-
